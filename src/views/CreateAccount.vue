@@ -30,7 +30,7 @@
 
         <button v-on:click="sendData()">Create Account</button>
         <div class="container" style="background-color:#f1f1f1">
-                <button onclick="window.location.href='/'">Cancel</button>
+                <button v-on:click="receiveData()">view accounts</button>
                 <a href="#">Forgot password?</a>
             </div>
             .{{response}}.
@@ -43,36 +43,43 @@ export default {
 data () {
             return {
 
-                input: {
+                        input: {username:this.username,password:this.password,firstname:this.firstname,lastname:this.lastname,email:this.email},
 
-                "username": "",
-                "password": "",
-                    "firstname": "",
-                    "lastname": "",
-                    "email":""
-                },
                 response: ""
             }
         },
   methods: {
     sendData() {
-      const options = {
-        url: 'http://localhost:8080/users',
-        method: 'POST',
+        console.log({user:this.input});
+        this.$http.post('http://localhost:8080/users',{user:[this.username,this.password,this.firstname,this.lastname,this.email]}
+       ,{"headers": {
 
-        jsonData: JSON.stringify(this.input),
-        "headers": {
-                     'Content-Type': 'application/json',
-                     }
-      };
-      this.$axios(options)
-      .then((res) => {
-        this.response = res
+                                  'Content-Type': 'application/json',
+                                  }})
+        .then((res) => {
+        this.response = res.data
       })
       .catch((err) => {
         this.response = err;
       })
-    }
+    },
+    receiveData() {
+          const options = {
+            url: 'http://localhost:8080/users',
+            method: 'GET',
+               "headers": {
+                         'Content-Type': 'application/json',
+                         }
+          };
+
+          this.$axios(options)
+          .then((res) => {
+            this.response = res.data
+          })
+          .catch((err) => {
+            this.response = err;
+          })
+  }
   }
 }
 </script>
