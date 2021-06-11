@@ -27,6 +27,7 @@
                     <input type="checkbox" checked="checked" name="remember"> Remember me
                 </label>
             </div>
+
         <button v-on:click="sendData()">Create Account</button>
         <div class="container" style="background-color:#f1f1f1">
                 <button onclick="window.location.href='/'">Cancel</button>
@@ -43,6 +44,7 @@ data () {
             return {
 
                 input: {
+
                 "username": "",
                 "password": "",
                     "firstname": "",
@@ -55,13 +57,14 @@ data () {
   methods: {
     sendData() {
       const options = {
-        url: 'https://cors-anywhere.herokuapp.com/http://127.0.0.1:8080/users',
+        url: 'http://localhost:8080/users',
         method: 'POST',
-        data: this.input,
-        "headers": { 'Accept': 'application/json','Allow-Control-Allow-Origin': '*',
-                     'Content-Type': 'application/json', 'Access-Control-Allow-Origin': true,
-                     'Access-Control-Allow-Origin': '*', 'x-requested-with':'http://127.0.0.1:8082' }
-      }
+
+        jsonData: JSON.stringify(this.input),
+        "headers": {
+                     'Content-Type': 'application/json',
+                     }
+      };
       this.$axios(options)
       .then((res) => {
         this.response = res
